@@ -22,7 +22,7 @@ namespace CoAP.Threading
         /// Starts a task without parameter.
         /// </summary>
         /// <param name="task">the task to run</param>
-        void Start(Action task);
+        void Start(System.Action task);
         /// <summary>
         /// Starts a task with a parameter.
         /// </summary>

@@ -23,7 +23,7 @@ namespace CoAP.Threading
         { }
 
         /// <inheritdoc/>
-        public void Start(Action task)
+        public void Start(System.Action task)
         {
             task();
         }

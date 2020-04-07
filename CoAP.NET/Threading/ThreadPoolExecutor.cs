@@ -20,7 +20,7 @@ namespace CoAP.Threading
     public sealed class ThreadPoolExecutor : IExecutor
     {
         /// <inheritdoc/>
-        public void Start(Action task)
+        public void Start(System.Action task)
         {
             ThreadPool.QueueUserWorkItem(o => task());
         }

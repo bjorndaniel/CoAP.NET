@@ -42,9 +42,9 @@ namespace CoAP.Channel
         /// <summary>
         /// Initializes a UDP channel with a random port.
         /// </summary>
-        public UDPChannel() 
+        public UDPChannel()
             : this(0)
-        { 
+        {
         }
 
         /// <summary>
@@ -298,7 +298,8 @@ namespace CoAP.Channel
             const Int32 SIO_UDP_CONNRESET = -1744830452;
             try
             {
-                socket.Socket.IOControl(SIO_UDP_CONNRESET, new Byte[] { 0 }, null);
+                socket.Socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+                //socket.Socket.IOControl(SIO_UDP_CONNRESET, new Byte[] { 0 }, null);
             }
             catch (Exception e)
             {

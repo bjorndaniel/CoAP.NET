@@ -20,7 +20,7 @@ namespace CoAP.Threading
     public sealed class TaskExecutor : IExecutor
     {
         /// <inheritdoc/>
-        public void Start(Action task)
+        public void Start(System.Action task)
         {
             Task.Factory.StartNew(task);
         }

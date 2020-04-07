@@ -50,13 +50,21 @@ namespace CoAP.Deduplication
                     keysToRemove.Add(pair.Key);
                 }
             }
-            if (keysToRemove.Count > 0)
+            try
             {
-                Exchange ex;
-                foreach (Exchange.KeyID key in keysToRemove)
+                if (keysToRemove.Count > 0)
                 {
-                    _incommingMessages.TryRemove(key, out ex);
+                    Exchange ex;
+                    foreach (Exchange.KeyID key in keysToRemove)
+                    {
+                        _incommingMessages.TryRemove(key, out ex);
+                    }
                 }
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
 
