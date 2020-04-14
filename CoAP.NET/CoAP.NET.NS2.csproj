@@ -17,5 +17,13 @@
   <ItemGroup>
     <PackageReference Include="System.Security.Permissions" Version="4.7.0" />
   </ItemGroup>
-
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <PackageId>CoAP.NET.NS2</PackageId>
+    <AssemblyName>CoAP.NET.NS2</AssemblyName>
+    <RootNamespace>CoAP.NET</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
 </Project>
