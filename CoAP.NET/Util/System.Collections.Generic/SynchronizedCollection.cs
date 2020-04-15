@@ -33,226 +33,250 @@ using System.Runtime.InteropServices;
 
 namespace System.Collections.Generic
 {
-	[ComVisibleAttribute (false)] 
-	internal class SynchronizedCollection<T> : IList<T>, ICollection<T>, 
-		IEnumerable<T>, IList, ICollection, IEnumerable
-	{
-		object root;
-		List<T> list;
+    [ComVisibleAttribute(false)]
+    internal class SynchronizedCollection<T> : IList<T>, ICollection<T>,
+        IEnumerable<T>, IList, ICollection, IEnumerable
+    {
+        object root;
+        List<T> list;
 
-		public SynchronizedCollection ()
-			: this (new object (), null, false)
-		{
-		}
+        public SynchronizedCollection()
+            : this(new object(), null, false)
+        {
+        }
 
-		public SynchronizedCollection (object syncRoot)
-			: this (syncRoot, null, false)
-		{
-		}
+        public SynchronizedCollection(object syncRoot)
+            : this(syncRoot, null, false)
+        {
+        }
 
-		public SynchronizedCollection (object syncRoot,
-			IEnumerable<T> list)
-			: this (syncRoot, new List<T> (list), false)
-		{
-		}
+        public SynchronizedCollection(object syncRoot,
+            IEnumerable<T> list)
+            : this(syncRoot, new List<T>(list), false)
+        {
+        }
 
-		public SynchronizedCollection (object syncRoot,
-			params T [] list)
-			: this (syncRoot, new List<T> (list), false)
-		{
-		}
+        public SynchronizedCollection(object syncRoot,
+            params T[] list)
+            : this(syncRoot, new List<T>(list), false)
+        {
+        }
 
-		public SynchronizedCollection (object syncRoot,
-			List<T> list, bool makeCopy)
-		{
-			if (syncRoot == null)
-				syncRoot = new object ();
-			root = syncRoot;
-			if (list == null)
-				this.list = new List<T> ();
-			else if (makeCopy)
-				this.list = new List<T> (list);
-			else
-				this.list = list;
-		}
+        public SynchronizedCollection(object syncRoot,
+            List<T> list, bool makeCopy)
+        {
+            if (syncRoot == null)
+                syncRoot = new object();
+            root = syncRoot;
+            if (list == null)
+                this.list = new List<T>();
+            else if (makeCopy)
+                this.list = new List<T>(list);
+            else
+                this.list = list;
+        }
 
-		public int Count {
-			get {
-				lock (root) {
-					return list.Count;
-				}
-			}
-		}
+        public int Count
+        {
+            get
+            {
+                lock (root)
+                {
+                    return list.Count;
+                }
+            }
+        }
 
-		public T this [int index] {
-			get {
-				lock (root) {
-					return list [index];
-				}
-			}
-			set {
-				SetItem (index, value);
-			}
-		}
+        public T this[int index]
+        {
+            get
+            {
+                lock (root)
+                {
+                    return list[index];
+                }
+            }
+            set
+            {
+                SetItem(index, value);
+            }
+        }
 
-		public object SyncRoot {
-			get { return root; }
-		}
+        public object SyncRoot
+        {
+            get { return root; }
+        }
 
-		protected List<T> Items {
-			get { return list; }
-		}
+        protected List<T> Items
+        {
+            get { return list; }
+        }
 
-		public void Add (T item)
-		{
-			InsertItem (list.Count, item);
-		}
+        public void Add(T item)
+        {
+            InsertItem(list.Count, item);
+        }
 
-		public void Clear ()
-		{
-			ClearItems ();
-		}
+        public void Clear()
+        {
+            ClearItems();
+        }
 
-		public bool Contains (T item)
-		{
-			lock (root) {
-				return list.Contains (item);
-			}
-		}
+        public bool Contains(T item)
+        {
+            lock (root)
+            {
+                return list.Contains(item);
+            }
+        }
 
-		public void CopyTo (T [] array, int index)
-		{
-			lock (root) {
-				list.CopyTo (array, index);
-			}
-		}
+        public void CopyTo(T[] array, int index)
+        {
+            lock (root)
+            {
+                list.CopyTo(array, index);
+            }
+        }
 
-		public IEnumerator<T> GetEnumerator ()
-		{
-			lock (root) {
-				return list.GetEnumerator ();
-			}
-		}
+        public IEnumerator<T> GetEnumerator()
+        {
+            lock (root)
+            {
+                return list.GetEnumerator();
+            }
+        }
 
-		public int IndexOf (T item)
-		{
-			lock (root) {
-				return list.IndexOf (item);
-			}
-		}
+        public int IndexOf(T item)
+        {
+            lock (root)
+            {
+                return list.IndexOf(item);
+            }
+        }
 
-		public void Insert (int index, T item)
-		{
-			InsertItem (index, item);
-		}
+        public void Insert(int index, T item)
+        {
+            InsertItem(index, item);
+        }
 
-		public bool Remove (T item)
-		{
-			int index = IndexOf (item);
-			if (index < 0)
-				return false;
-			RemoveAt (index);
-			return true;
-		}
+        public bool Remove(T item)
+        {
+            int index = IndexOf(item);
+            if (index < 0)
+                return false;
+            RemoveAt(index);
+            return true;
+        }
 
-		public void RemoveAt (int index)
-		{
-			RemoveItem (index);
-		}
+        public void RemoveAt(int index)
+        {
+            RemoveItem(index);
+        }
 
-		protected virtual void ClearItems ()
-		{
-			lock (root) {
-				list.Clear ();
-			}
-		}
+        protected virtual void ClearItems()
+        {
+            lock (root)
+            {
+                list.Clear();
+            }
+        }
 
-		protected virtual void InsertItem (int index, T item)
-		{
-			lock (root) {
-				list.Insert (index, item);
-			}
-		}
+        protected virtual void InsertItem(int index, T item)
+        {
+            lock (root)
+            {
+                list.Insert(index, item);
+            }
+        }
 
-		protected virtual void RemoveItem (int index)
-		{
-			lock (root) {
-				list.RemoveAt (index);
-			}
-		}
+        protected virtual void RemoveItem(int index)
+        {
+            lock (root)
+            {
+                list.RemoveAt(index);
+            }
+        }
 
-		protected virtual void SetItem (int index, T item)
-		{
-			lock (root) {
-				list [index] = item;
-			}
-		}
+        protected virtual void SetItem(int index, T item)
+        {
+            lock (root)
+            {
+                list[index] = item;
+            }
+        }
 
-		#region Explicit interface implementations
+        #region Explicit interface implementations
 
-		void ICollection.CopyTo (Array array, int index)
-		{
-			CopyTo ((T []) array, index);
-		}
+        void ICollection.CopyTo(Array array, int index)
+        {
+            CopyTo((T[])array, index);
+        }
 
-		IEnumerator IEnumerable.GetEnumerator ()
-		{
-			return GetEnumerator ();
-		}
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
 
-		int IList.Add (object value)
-		{
-			lock (root) {
-				Add ((T) value);
-				return list.Count - 1;
-			}
-		}
+        int IList.Add(object value)
+        {
+            lock (root)
+            {
+                Add((T)value);
+                return list.Count - 1;
+            }
+        }
 
-		bool IList.Contains (object value)
-		{
-			return Contains ((T) value);
-		}
+        bool IList.Contains(object value)
+        {
+            return Contains((T)value);
+        }
 
-		int IList.IndexOf (object value)
-		{
-			return IndexOf ((T) value);
-		}
+        int IList.IndexOf(object value)
+        {
+            return IndexOf((T)value);
+        }
 
-		void IList.Insert (int index, object value)
-		{
-			Insert (index, (T) value);
-		}
+        void IList.Insert(int index, object value)
+        {
+            Insert(index, (T)value);
+        }
 
-		void IList.Remove (object value)
-		{
-			Remove ((T) value);
-		}
+        void IList.Remove(object value)
+        {
+            Remove((T)value);
+        }
 
-		bool ICollection<T>.IsReadOnly {
-			get { return false; }
-		}
+        bool ICollection<T>.IsReadOnly
+        {
+            get { return false; }
+        }
 
-		bool ICollection.IsSynchronized {
-			get { return true; }
-		}
+        bool ICollection.IsSynchronized
+        {
+            get { return true; }
+        }
 
-		object ICollection.SyncRoot {
-			get { return root; }
-		}
+        object ICollection.SyncRoot
+        {
+            get { return root; }
+        }
 
-		bool IList.IsFixedSize {
-			get { return false; }
-		}
+        bool IList.IsFixedSize
+        {
+            get { return false; }
+        }
 
-		bool IList.IsReadOnly {
-			get { return false; }
-		}
+        bool IList.IsReadOnly
+        {
+            get { return false; }
+        }
 
-		object IList.this [int index] {
-			get { return this [index]; }
-			set { this [index] = (T) value; }
-		}
+        object IList.this[int index]
+        {
+            get { return this[index]; }
+            set { this[index] = (T)value; }
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }
